@@ -1,0 +1,128 @@
+---
+title: "interation"
+author: "Yangyang Chen"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(rvest)
+```
+
+```{r}
+set.seed(12345)
+```
+
+## Z scare function
+
+Z scores substract the mean and divided by the sd.
+
+```{r}
+x_vec = rnorm(20, mean = 5, sd=.3)
+
+
+```
+
+Compute X score for `x_vec`
+
+```{r}
+(x_vec - mean(x_vec)) / sd(x_vec)
+```
+
+Wirte a function to do this!
+
+```{r}
+z_score = function(x){
+  
+  if(!is.numeric(x)){
+    stop("Argument should be numbers")
+  }else if(length(x)< 2) {
+    stop("Your need at least 2 numbers to get z scores")
+  }
+  
+  z = (x - mean(x))/ sd(x)
+  
+  z
+}
+```
+
+Check that this works.
+
+```{r}
+z_score(x = x_vec)
+
+z_scores(x = rnorm(10,mean = 5))
+```
+
+Keep checking.
+
+```{r, error=TRUE}
+z_score(x = 3)
+
+z_score(c("my", "name","is"))
+
+z_score(c(TRUE, TRUE, FALSE, TRUE))
+
+z_score(iris)
+```
+
+
+### MUltiple outputs.
+
+Write a function that returns the mean and sd from a sample of numbers.
+
+```{r}
+mean_and_sd = function(x){
+  
+  mean_x = mean(x)
+  sd_x = sd(x)
+  
+  tibble(
+    mean = mean_x,
+    sd = sd_x
+  )
+}
+```
+
+Double check I did this right..
+
+```{r}
+mean_and_sd(x_vec)
+```
+
+### Start gettting means and sds
+```{r}
+
+
+x_vec = rnorm(n = 30, mean = 5, sd = .5)
+  
+tibble(
+    mean = mean(x_vec),
+    sd = sd(x_vec)
+  )
+
+```
+
+Let's write a function that uses `n`, a true mean, and true SD as inputs.
+
+```{r}
+sim_mean_sd = function(n_obs , mu, sigma){
+  
+  x_vec = rnorm(n = n_obs, mean = 5, sd = sigma)
+  
+  tibble(
+    mean = mean(x_vec),
+    sd = sd(x_vec)
+  )
+}
+
+sim_mean_sd(n_obs = 3000, mu = 5, sigma = .5)
+
+sim_mean_sd(mu = 12,n_obs = 24,4)
+```
+
